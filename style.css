@@ -1,0 +1,49 @@
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f8f9fa; /* Optional background color */
+    font-family: 'Indie Flower', sans-serif;
+    font-size: medium;
+}
+
+.container {
+    max-width: 60%;
+    min-width: 770px;
+    border: 1px solid #ccc;
+    box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.4);
+    padding: 20px;
+    background-color: #f9ffd7; 
+}
+
+.todo-list {
+    margin-top: 20px;
+}
+
+#items {
+    margin-bottom: 20px;
+}
+
+.btn-subtle-border {
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+.btn-subtle-border.active {
+    border-color: rgb(6, 226, 226);
+    background-color: rgb(230, 232, 232);
+}
+
+.btn-icon {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    font-size: inherit;
+}
+
+.btn-icon:hover {
+    color: grey; 
+}

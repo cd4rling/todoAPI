@@ -2,10 +2,58 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>To Do List</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/58fbb49a80.js" crossorigin="anonymous"></script>  
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="script.js"></script>  
+    <title>To-Do List</title>
+    <link href="style.css" rel="stylesheet" />
 </head>
 <body>
-    
+    <div class="container">
+        <h1>To Do List</h1>
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="input-group">
+                    <input id="todo-input" class="form-control" placeholder="New To Do Item">
+                    <span class="input-group-btn">
+                        <button id="add-button" class="btn btn-primary" type="button"><i class="fa-solid fa-plus"></i></button>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row todo-list">
+            <div class="col-xs-1">
+                <h3></h3>
+            </div>
+            <div class="col-xs-5">
+                <h3>Items</h3>
+            </div>
+            <div class="col-xs-5">
+                <h3>Created</h3>
+            </div>
+            <div class="col-xs-1">
+                <h3></h3>
+            </div>
+        </div>
+        <div id="items">
+            <!--append new item rows here-->
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="btn-group"> <!--EDIT NOTE: consider del btn-group for separate div col-xs-2...-->
+                    <button id="all-button" type="button" class="btn btn-default btn-subtle-border active"><i class="fa-solid fa-list"></i> All</button>
+                    <button id="active-button" type="button" class="btn btn-default btn-subtle-border"><i class="fa-solid fa-circle"></i> Active</button>
+                    <button id="completed-button" type="button" class="btn btn-default btn-subtle-border"><i class="fa-solid fa-check-circle"></i> Complete</button>
+                    <!--<button id="deleteAll-button" type="button" class="btn btn-default btn-subtle-border"><i class="fa-solid fa-circle-xmark"></i> Delete All</button>-->
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
