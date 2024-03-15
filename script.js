@@ -6,9 +6,10 @@ $(document).ready(function() {
         $(this).addClass('active');
     });
 
+    var httpRequest = new XMLHttpRequest();
+
     //GET request function to load the most recent list
     var getRequest = function() {
-        var httpRequest = new XMLHttpRequest();
         httpRequest.onload = function() {
             if (httpRequest.readyState === XMLHttpRequest.DONE) {
                 if (httpRequest.status === 200) {
@@ -22,20 +23,29 @@ $(document).ready(function() {
                         var compButton = $("<button class='btn-icon btn-check'><i class='far fa-check-circle'></i></button>");
                         var checkButton;
                         var delButton = $("<button class='btn-icon btn-delete'><i class='fa-solid fa-circle-minus'></i></button>");
-                        if (item.complete) {
+                        var complete;
+                        if (item.completed) {
                             checkButton = compButton;
+                            complete = true;
                         } else {
                             checkButton = actButton;
+                            complete = false;
                         }
-                        var newItem = item.content;
+
                         var newCreated = item.created_at;
                         var newID = item.id;
-                        var htmlText = "<div class='row'><div class='col-xs-1'>" + 
-                            checkButton.prop('outerHTML') + "</div><div class='col-xs-5'>" + 
-                            newItem + "</div><div class='col-xs-5'>" + 
+
+                        var newItem = $("<div class='col-xs-5' id=" + newID + ">" + item.content + "</div>");
+                        if (complete) {
+                            newItem.addClass('completed');
+                        }
+
+                        var htmlText = "<div class='row rowitem'><div class='col-xs-1'>" + 
+                            checkButton.prop('outerHTML') + "</div>" + 
+                            newItem.prop('outerHTML') + "<div class='col-xs-5'>" + 
                             newCreated + "</div><div class='col-xs-1'>" + 
-                            delButton.prop('outerHTML') + "</div>" + 
-                            "<div class='hidden' data-item-id='" + newID + "'></div>" +
+                            delButton.prop('outerHTML') + 
+                            "</div><div class='hidden' data-item-id='" + newID + "' data-complete='" + complete + "'></div>" +
                             "</div>";
 
                         $("#items").append(htmlText);
@@ -57,7 +67,8 @@ $(document).ready(function() {
 
     //add new item on click
     $("#add-button").click(function() {
-        var httpRequest = new XMLHttpRequest();
+        var contentItem = $("#todo-input").val();
+        httpRequest = new XMLHttpRequest();
         httpRequest.onload = function() {
             if (httpRequest.readyState === XMLHttpRequest.DONE) {
                 if (httpRequest.status === 200) {
@@ -75,7 +86,6 @@ $(document).ready(function() {
         }
         httpRequest.open('POST', 'https://fewd-todolist-api.onrender.com/tasks?api_key=1219');
         httpRequest.setRequestHeader("Content-Type", "application/json");
-        var contentItem = $("#todo-input").val();
         httpRequest.send(JSON.stringify({
             task: {
                 content: contentItem
@@ -83,7 +93,41 @@ $(document).ready(function() {
         }));
     });
 
-    //mark item complete, toggle icon
+    //mark item complete/active, toggle icon
+    $(document).on("click", ".btn-check", function() {
+        var itemId = $(this).closest('.row').find('.hidden').data('item-id');
+        var elemId = "#" + itemId;
+        console.log(itemId, elemId);
+        var complete = $(this).closest('.row').find('.hidden').data('complete');
+        console.log(complete);
+        if(complete) {
+            $(elemId).css('text-decoration', 'none');
+        } else {
+            $(elemId).css('text-decoration', 'line-through');
+        }
+        toggleActive(itemId, complete);
+    });
+
+    function toggleActive(itemId, complete) {
+        httpRequest = new XMLHttpRequest();
+        httpRequest.onload = function() {
+            if (httpRequest.readyState === XMLHttpRequest.DONE) {
+                if (httpRequest.status === 200) {
+                    console.log(httpRequest.responseText);
+                    getRequest();
+                } else {
+                    console.log(httpRequest.statusText);
+                }
+            }
+        }
+        httpRequest.onerror = function() {
+            console.log(httpRequest.statusText);
+        }
+        var endpoint = complete ? 'mark_active' : 'mark_complete';
+        httpRequest.open('PUT', 'https://fewd-todolist-api.onrender.com/tasks/' + itemId + '/' + endpoint + '?api_key=1219');
+        httpRequest.send();
+    }
+
 
     //delete item
     // Add event listener for delete buttons after they are created
@@ -93,38 +137,62 @@ $(document).ready(function() {
     });
 
     function deleteItem(itemId) {
-        var httpRequest = new XMLHttpRequest();
+        httpRequest = new XMLHttpRequest();
         httpRequest.onload = function() {
-        if (httpRequest.readyState === XMLHttpRequest.DONE) {
-            if (httpRequest.status === 200) {
-            console.log(httpRequest.responseText);
-            getRequest();
-            } else {
-            console.log(httpRequest.statusText);
+            if (httpRequest.readyState === XMLHttpRequest.DONE) {
+                if (httpRequest.status === 200) {
+                    console.log(httpRequest.responseText);
+                    getRequest();
+                } else {
+                    console.log(httpRequest.statusText);
+                }
             }
         }
-        }
         httpRequest.onerror = function() {
-        console.log(httpRequest.statusText);
+            console.log(httpRequest.statusText);
         }
         httpRequest.open('DELETE', 'https://fewd-todolist-api.onrender.com/tasks/' + itemId + '?api_key=1219');
         httpRequest.send();
     }
 
-    //filter list to all
+    //show all
     $("#all-button").click(function() {
-        // Filter list to all
+        $(".row").each(function(){
+            $(this).show();
+        });
     });
 
     //filter list to active
     $("#active-button").click(function() {
-        // Filter list to active
+        $(".rowitem").each(function() {
+            var isCompleted = $(this).find('.hidden').data('complete');
+            if (isCompleted) {
+                $(this).hide();
+            } else {
+                $(this).show();
+            }
+        });
     });
 
     //filter list to completed
     $("#completed-button").click(function() {
-        // Filter list to completed
+        $(".rowitem").each(function() {
+            var isCompleted = $(this).find('.hidden').data('complete');
+            if (isCompleted) {
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+        });
     });
+
+    $("#deleteAll-button").click(function() {
+        $(".btn-delete").each(function() {
+            var itemId = $(this).closest('.row').find('.hidden').data('item-id');
+            deleteItem(itemId);
+        });
+    });
+    
 
     $("#todo-input").keypress(function(event) {
         if (event.which === 13) { // Check if Enter key is pressed

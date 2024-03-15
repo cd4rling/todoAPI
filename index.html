@@ -44,13 +44,18 @@
             <!--append new item rows here-->
         </div>
 
-        <div class="row">
-            <div class="col-xs-12">
+        <div class="row row-no-gutters">
+            <div class="col-xs-10">
                 <div class="btn-group"> <!--EDIT NOTE: consider del btn-group for separate div col-xs-2...-->
-                    <button id="all-button" type="button" class="btn btn-default btn-subtle-border active"><i class="fa-solid fa-list"></i> All</button>
-                    <button id="active-button" type="button" class="btn btn-default btn-subtle-border"><i class="fa-solid fa-circle"></i> Active</button>
-                    <button id="completed-button" type="button" class="btn btn-default btn-subtle-border"><i class="fa-solid fa-check-circle"></i> Complete</button>
-                    <!--<button id="deleteAll-button" type="button" class="btn btn-default btn-subtle-border"><i class="fa-solid fa-circle-xmark"></i> Delete All</button>-->
+                    <button id="all-button" type="button" class="btn btn-subtle-border active"><i class="fa-solid fa-list"></i> All</button>
+                    <button id="active-button" type="button" class="btn btn-subtle-border"><i class="fa-solid fa-circle"></i> Active</button>
+                    <button id="completed-button" type="button" class="btn btn-subtle-border"><i class="fa-solid fa-check-circle"></i> Complete</button>
+                    <!--<button id="deleteAll-button" type="button" class="btn btn-default btn-subtle-border"><i class="fa-regular fa-trash-can"></i> Clear List</button>-->
+                </div>
+            </div>
+            <div class="col-xs-2">
+                <div class="btn-group text-right">
+                    <button id="deleteAll-button" type="button" class="btn btn-default btn-subtle-border"><i class="fa-regular fa-trash-can"></i> Clear List</button>
                 </div>
             </div>
         </div>

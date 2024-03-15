@@ -12,6 +12,7 @@ body {
 .container {
     max-width: 60%;
     min-width: 770px;
+    min-height: 350px;
     border: 1px solid #ccc;
     box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.4);
     padding: 20px;
@@ -29,11 +30,18 @@ body {
 .btn-subtle-border {
     border: 1px solid transparent;
     border-radius: 4px;
+    width: 100px;
+    background-color: transparent;
+    margin: 0;
 }
 
 .btn-subtle-border.active {
-    border-color: rgb(6, 226, 226);
-    background-color: rgb(230, 232, 232);
+    border-color: rgb(6, 226, 226, 0.2);
+    background-color: transparent;
+}
+
+.btn-group .btn:hover {
+    background-color: transparent;
 }
 
 .btn-icon {
@@ -47,3 +55,20 @@ body {
 .btn-icon:hover {
     color: grey; 
 }
+
+.flex-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.flex-item {
+    margin-top: auto;
+}
+
+.completed {
+    text-decoration: line-through;
+}
+
+
+
+
