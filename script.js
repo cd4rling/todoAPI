@@ -42,7 +42,7 @@ $(document).ready(function() {
 
                         var htmlText = "<div class='row rowitem'><div class='col-xs-1'>" + 
                             checkButton.prop('outerHTML') + "</div>" + 
-                            newItem.prop('outerHTML') + "<div class='col-xs-5'>" + 
+                            newItem.prop('outerHTML') + "<div class='col-xs-5 date-time'>" + 
                             newCreated + "</div><div class='col-xs-1'>" + 
                             delButton.prop('outerHTML') + 
                             "</div><div class='hidden' data-item-id='" + newID + "' data-complete='" + complete + "'></div>" +
@@ -186,13 +186,70 @@ $(document).ready(function() {
         });
     });
 
+    //delete all itmes
     $("#deleteAll-button").click(function() {
         $(".btn-delete").each(function() {
             var itemId = $(this).closest('.row').find('.hidden').data('item-id');
             deleteItem(itemId);
         });
     });
-    
+
+    //sort old to new
+    $("#sort-down").click(function() {
+        var compArray = []
+        $(".rowitem").each(function() {
+            compArray.push($(this).find('.date-time').text()); //push to compete date/time array
+        });
+        console.log(compArray);
+
+        function compareDates(dateStr1, dateStr2) {
+            var date1 = new Date(dateStr1);
+            var date2 = new Date(dateStr2);
+            return date1 - date2; // Subtracting dates will automatically sort them
+        }
+        
+        // Sort the dateTimeArray using the compareDates function
+        compArray.sort(compareDates);
+        console.log(compArray);
+
+        compArray.forEach(function(dateTime) {
+            var $rowToMove = $(".rowitem").filter(function() {
+                return $(this).find('.date-time').text() === dateTime; // Find the row with the matching date-time value
+            });
+        
+            // Append/move the row to the end of the parent container
+            $rowToMove.appendTo("#items");
+        });
+    });
+
+    //sort new to old
+    $("#sort-up").click(function() {
+        var compArray = []
+        $(".rowitem").each(function() {
+            compArray.push($(this).find('.date-time').text()); //push to compete date/time array
+        });
+        console.log(compArray);
+
+        function compareDates(dateStr1, dateStr2) {
+            var date1 = new Date(dateStr1);
+            var date2 = new Date(dateStr2);
+            return date2 - date1; // Subtracting dates will automatically sort them
+        }
+        
+        // Sort the dateTimeArray using the compareDates function
+        compArray.sort(compareDates);
+        console.log(compArray);
+
+        compArray.forEach(function(dateTime) {
+            var $rowToMove = $(".rowitem").filter(function() {
+                return $(this).find('.date-time').text() === dateTime; // Find the row with the matching date-time value
+            });
+        
+            // Append/move the row to the end of the parent container
+            $rowToMove.appendTo("#items");
+        });
+    });
+
 
     $("#todo-input").keypress(function(event) {
         if (event.which === 13) { // Check if Enter key is pressed
